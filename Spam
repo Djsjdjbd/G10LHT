@@ -1,0 +1,37 @@
+name: Run Spam Script
+
+on:
+  workflow_dispatch:
+    inputs:
+      sdt:
+        description: "Nhập số điện thoại"
+        required: true
+        default: ""  # Thay đổi giá trị mặc định nếu cần
+      so_lan_spam:
+        description: "Nhập số lần spam"
+        required: true
+        default: "1000"  # Thay đổi giá trị mặc định nếu cần
+
+jobs:
+  run-spam:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Bước 1: Checkout code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Bước 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.x
+
+      # Bước 3: Install dependencies
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Bước 4: Run script with inputs
+      - name: Run spamv3.py
+        run: |
+          echo -e "${{ github.event.inputs.sdt }}\n${{ github.event.inputs.so_lan_spam }}" | python spamv3.py
